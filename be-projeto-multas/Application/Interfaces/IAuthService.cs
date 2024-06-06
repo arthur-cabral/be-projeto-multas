@@ -13,5 +13,7 @@ namespace Application.Interfaces
         Task Register(RegisterModelDTO registerModel);
         Task<AccessTokenResponseDTO> RefreshToken(TokenModelDTO tokenModel);
         Task Revoke(string username);
+        Task AddUserToRole(string email, string roleName);
+        Task CreateRole(string roleName);
     }
 }

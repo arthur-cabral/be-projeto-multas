@@ -7,6 +7,7 @@ using Application.DTO.JWT;
 using System.Security.Claims;
 using System.IdentityModel.Tokens.Jwt;
 using Microsoft.AspNetCore.Authorization;
+using Application.Exceptions;
 
 namespace API.Controllers
 {
@@ -62,7 +63,7 @@ namespace API.Controllers
             }
         }
 
-        [Authorize]
+        [Authorize(Policy = "AdminOnly")]
         [HttpPost("revoke/{username}")]
         public async Task<ActionResult> Revoke(string username)
         {
@@ -72,6 +73,45 @@ namespace API.Controllers
                 return NoContent();
             } 
             catch(Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [Authorize(Policy = "AdminOnly")]
+        [HttpPost("addUserToRole")]
+        public async Task<ActionResult> AddUserToRole(string email, string roleName)
+        {
+            try
+            {
+                await _authService.AddUserToRole(email, roleName);
+                return Ok("User " + email + " added to role " + roleName);
+            }
+            catch (NotFoundException ex)
+            {
+                return NotFound(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+
+        }
+
+        [Authorize(Policy = "AdminOnly")]
+        [HttpPost("createRole")]
+        public async Task<ActionResult> CreateRole(string roleName)
+        {
+            try
+            {
+                await _authService.CreateRole(roleName);
+                return Ok("Role " + roleName + " created successfully");
+            }
+            catch (DuplicatedObjectException ex)
+            {
+                return Conflict(ex.Message);
+            }
+            catch (Exception ex)
             {
                 return BadRequest(ex.Message);
             }
