@@ -19,6 +19,7 @@ namespace API.Controllers
             _multaService = multaService;
         }
 
+        [Authorize(Policy = "UserOnly")]
         [HttpGet]
         public async Task<ActionResult<List<MultaDTO>>> GetAllMultas()
         {
@@ -32,6 +33,7 @@ namespace API.Controllers
             }
         }
 
+        [Authorize(Policy = "UserOnly")]
         [HttpGet("{id}")]
         public async Task<ActionResult<MultaDTO>> GetMultaById(long id)
         {
@@ -46,6 +48,7 @@ namespace API.Controllers
             }
         }
 
+        [Authorize(Policy = "UserOnly")]
         [HttpPost]
         public async Task<ActionResult<MultaDTO>> PostMulta([FromBody] MultaDTO multaDTO)
         {
@@ -60,6 +63,7 @@ namespace API.Controllers
             }
         }
 
+        [Authorize(Policy = "AdminOnly")]
         [HttpPut("{id}")]
         public async Task<ActionResult<MultaDTO>> PutMultaById(long id, [FromBody] MultaDTO multaDTO)
         {
@@ -79,6 +83,7 @@ namespace API.Controllers
             }
         }
 
+        [Authorize(Policy = "AdminOnly")]
         [HttpDelete("{id}")]
         public async Task<ActionResult<MultaDTO>> DeleteMultaById(long id)
         {
