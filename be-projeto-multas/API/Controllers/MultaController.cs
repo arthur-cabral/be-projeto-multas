@@ -9,7 +9,6 @@ namespace API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize]
     public class MultaController : ControllerBase
     {
         private readonly IMultaService _multaService;
@@ -48,7 +47,6 @@ namespace API.Controllers
             }
         }
 
-        [Authorize(Policy = "UserOnly")]
         [HttpPost]
         public async Task<ActionResult<MultaDTO>> PostMulta([FromBody] MultaDTO multaDTO)
         {
