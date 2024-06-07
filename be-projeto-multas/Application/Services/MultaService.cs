@@ -31,77 +31,49 @@ namespace Application.Services
 
         public async Task<MultaDTO> GetMultaById(long id)
         {
-            try
+            var existsMultaById = await _multaRepository.ExistsMultaById(id);
+            if (!existsMultaById)
             {
-                var existsMultaById = await _multaRepository.ExistsMultaById(id);
-                if (!existsMultaById)
-                {
-                    throw new NotFoundException("Multa de id " + id + " não encontrada");
-                }
-                var findMultaById = await _multaRepository.GetMultaById(id);
-                return _mapper.Map<MultaDTO>(findMultaById);
-            } 
-            catch (NotFoundException ex)
-            {
-                throw new NotFoundException(ex.Message);
+                throw new NotFoundException("Multa de id " + id + " não encontrada");
             }
+            var findMultaById = await _multaRepository.GetMultaById(id);
+            return _mapper.Map<MultaDTO>(findMultaById); 
         }
 
         public async Task<MultaDTO> PostMulta(MultaDTO multaDTO)
         {
-            try
+            var existsMultaByAIT = await _multaRepository.ExistsMultaByAIT(multaDTO.NumeroAIT);
+            if (existsMultaByAIT)
             {
-                var existsMultaByAIT = await _multaRepository.ExistsMultaByAIT(multaDTO.NumeroAIT);
-                if (existsMultaByAIT)
-                {
-                    throw new DuplicatedObjectException("Multa de AIT " + multaDTO.NumeroAIT + " já existe");
-                }
-                multaDTO.DataHoraInfracao = DateTime.UtcNow;
-                var multaEntity = _mapper.Map<Multa>(multaDTO);
-                var newMulta = await _multaRepository.PostMulta(multaEntity);
-                return _mapper.Map<MultaDTO>(newMulta);
+                throw new DuplicatedObjectException("Multa de AIT " + multaDTO.NumeroAIT + " já existe");
             }
-            catch (DuplicatedObjectException ex)
-            {
-                throw new DuplicatedObjectException(ex.Message);
-            }
+            multaDTO.DataHoraInfracao = DateTime.UtcNow;
+            var multaEntity = _mapper.Map<Multa>(multaDTO);
+            var newMulta = await _multaRepository.PostMulta(multaEntity);
+            return _mapper.Map<MultaDTO>(newMulta);
         }
 
         public async Task<MultaDTO> PutMultaById(MultaDTO multaDTO)
         {
-            try
+            var existsMultaById = await _multaRepository.ExistsMultaById(multaDTO.MultaId);
+            if (!existsMultaById)
             {
-                var existsMultaById = await _multaRepository.ExistsMultaById(multaDTO.MultaId);
-                if (!existsMultaById)
-                {
-                    throw new NotFoundException("Multa de id " + multaDTO.MultaId + " não encontrada");
-                }
-                var multaEntity = _mapper.Map<Multa>(multaDTO);
-                multaEntity.MultaId = multaDTO.MultaId;
-                var updatedMulta = await _multaRepository.PutMulta(multaEntity);
-                return _mapper.Map<MultaDTO>(updatedMulta);
+                throw new NotFoundException("Multa de id " + multaDTO.MultaId + " não encontrada");
             }
-            catch (NotFoundException ex)
-            {
-                throw new NotFoundException(ex.Message);
-            }
+            var multaEntity = _mapper.Map<Multa>(multaDTO);
+            multaEntity.MultaId = multaDTO.MultaId;
+            var updatedMulta = await _multaRepository.PutMulta(multaEntity);
+            return _mapper.Map<MultaDTO>(updatedMulta);
         }
 
         public async Task DeleteMultaById(long id)
         {
-            try
+            var existsMultaById = await _multaRepository.ExistsMultaById(id);
+            if (!existsMultaById)
             {
-                var existsMultaById = await _multaRepository.ExistsMultaById(id);
-                if (!existsMultaById)
-                {
-                    throw new NotFoundException("Multa de id " + id + " não encontrada");
-                }
-                await _multaRepository.DeleteMultaById(id);
-            } 
-            catch (NotFoundException ex)
-            {
-                throw new NotFoundException(ex.Message);
+                throw new NotFoundException("Multa de id " + id + " não encontrada");
             }
+            await _multaRepository.DeleteMultaById(id);
         }
     }
 }
