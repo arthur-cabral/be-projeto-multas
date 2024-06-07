@@ -8,6 +8,7 @@ using System.Security.Claims;
 using System.IdentityModel.Tokens.Jwt;
 using Microsoft.AspNetCore.Authorization;
 using Application.Exceptions;
+using Application.Responses;
 
 namespace API.Controllers
 {
@@ -37,12 +38,12 @@ namespace API.Controllers
         }
 
         [HttpPost("register")]
-        public async Task<ActionResult> Register([FromBody] RegisterModelDTO registerModel)
+        public async Task<ActionResult<MessageResponse>> Register([FromBody] RegisterModelDTO registerModel)
         {
             try
             {
                 await _authService.Register(registerModel);
-                return Ok("Usuário criado com sucesso!");
+                return Ok(new MessageResponse("Usuário criado com sucesso!"));
             }
             catch (Exception ex)
             {
@@ -51,7 +52,7 @@ namespace API.Controllers
         }
 
         [HttpPost("refreshToken")]
-        public async Task<ActionResult> RefreshToken(TokenModelDTO tokenModel)
+        public async Task<ActionResult<AccessTokenResponseDTO>> RefreshToken(TokenModelDTO tokenModel)
         {
             try
             {
@@ -80,12 +81,12 @@ namespace API.Controllers
 
         [Authorize(Policy = "AdminOnly")]
         [HttpPost("addUserToRole")]
-        public async Task<ActionResult> AddUserToRole(string email, string roleName)
+        public async Task<ActionResult<MessageResponse>> AddUserToRole(string email, string roleName)
         {
             try
             {
                 await _authService.AddUserToRole(email, roleName);
-                return Ok("Usuário " + email + " adicionado a role " + roleName);
+                return Ok(new MessageResponse("Usuário " + email + " adicionado a role " + roleName));
             }
             catch (NotFoundException ex)
             {
@@ -100,12 +101,12 @@ namespace API.Controllers
 
         [Authorize(Policy = "AdminOnly")]
         [HttpPost("createRole")]
-        public async Task<ActionResult> CreateRole(string roleName)
+        public async Task<ActionResult<MessageResponse>> CreateRole(string roleName)
         {
             try
             {
                 await _authService.CreateRole(roleName);
-                return Ok("Role " + roleName + " criada com sucesso!");
+                return Ok(new MessageResponse("Role " + roleName + " criada com sucesso!"));
             }
             catch (DuplicatedObjectException ex)
             {
