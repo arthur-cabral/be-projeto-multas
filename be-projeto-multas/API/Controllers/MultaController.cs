@@ -55,9 +55,9 @@ namespace API.Controllers
                 var multa = await _multaService.PostMulta(multaDTO);
                 return Ok(multa);
             }
-            catch (Exception ex)
+            catch (DuplicatedObjectException ex)
             {
-                return BadRequest(ex.Message);
+                return Conflict(ex.Message);
             }
         }
 
