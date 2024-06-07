@@ -19,7 +19,7 @@ namespace Infrastructure.Repositories
 
         public async Task<List<Multa>> GetAllMultas()
         {
-            return await Get().ToListAsync();
+            return await Get().OrderByDescending((x) => x.DataHoraInfracao).ToListAsync();
         }
 
         public async Task<Multa> GetMultaByAIT(string ait)
