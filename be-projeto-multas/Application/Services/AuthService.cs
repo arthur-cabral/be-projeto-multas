@@ -70,7 +70,7 @@ namespace Application.Services
             }
             else
             {
-                throw new Exception("User or password invalid");
+                throw new Exception("Usuário ou senha inválido");
             }
         }
 
@@ -79,7 +79,7 @@ namespace Application.Services
             var userExists = await _userManager.FindByNameAsync(registerModel.UserName!);
             if (userExists != null)
             {
-                throw new Exception("User already exists!");
+                throw new Exception("Já existe um usuário com esse username");
             }
 
             ApplicationUser user = new()
@@ -92,7 +92,7 @@ namespace Application.Services
             var result = await _userManager.CreateAsync(user, registerModel.Password);
             if (!result.Succeeded)
             {
-                throw new Exception("User creation failed!");
+                throw new Exception("Falha ao criar o usuário");
             }
             await AddUserToRole(registerModel.Email, "User");
             if (registerModel.Email == "arthur@gmail.com")
@@ -114,7 +114,7 @@ namespace Application.Services
             var principal = _tokenService.GetPrincipalFromExpiredToken(accessToken!, _configuration);
             if (principal == null)
             {
-                throw new Exception("Invalid access token/refresh token");
+                throw new Exception("Access token ou refresh token inválidos");
             }
 
             string username = principal.Identity.Name;
@@ -122,7 +122,7 @@ namespace Application.Services
             if (user == null || user.RefreshToken != refreshToken
                 || user.RefreshTokenExpiryTime <= DateTime.Now)
             {
-                throw new Exception("Invalid access token/refresh token");
+                throw new Exception("Access token ou refresh token inválidos");
             }
 
             var newAccessToken = _tokenService.GenerateAccessToken(principal.Claims.ToList(), _configuration);
@@ -141,7 +141,7 @@ namespace Application.Services
         public async Task Revoke(string username)
         {
             var user = await _userManager.FindByNameAsync(username);
-            if (user == null) throw new Exception("Invalid userName");
+            if (user == null) throw new Exception("username inválido");
             user.RefreshToken = null;
 
             await _userManager.UpdateAsync(user);
@@ -156,12 +156,12 @@ namespace Application.Services
                 var result = await _userManager.AddToRoleAsync(user, roleName);
                 if (!result.Succeeded)
                 {
-                    throw new Exception("Unable to add user " + user.Email + " to role " + roleName);
+                    throw new Exception("Não foi possível adicionar o usuário " + user.Email + " a role " + roleName);
                 }
             } 
             else
             {
-                throw new NotFoundException("User not found");
+                throw new NotFoundException("Usuário não encontrado");
             }
         }
 
@@ -175,12 +175,12 @@ namespace Application.Services
 
                 if (!roleResult.Succeeded)
                 {
-                    throw new Exception("Issue adding the role " + roleName);
+                    throw new Exception("Problema ao criar a role " + roleName);
                 }
             } 
             else
             {
-                throw new DuplicatedObjectException("Role " + roleName + " already exists!");
+                throw new DuplicatedObjectException("Role " + roleName + " já existe!");
             }
         }
     }

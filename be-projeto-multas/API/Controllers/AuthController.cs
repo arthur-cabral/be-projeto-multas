@@ -42,7 +42,7 @@ namespace API.Controllers
             try
             {
                 await _authService.Register(registerModel);
-                return Ok("User created successfully!");
+                return Ok("Usuário criado com sucesso!");
             }
             catch (Exception ex)
             {
@@ -85,7 +85,7 @@ namespace API.Controllers
             try
             {
                 await _authService.AddUserToRole(email, roleName);
-                return Ok("User " + email + " added to role " + roleName);
+                return Ok("Usuário " + email + " adicionado a role " + roleName);
             }
             catch (NotFoundException ex)
             {
@@ -105,7 +105,7 @@ namespace API.Controllers
             try
             {
                 await _authService.CreateRole(roleName);
-                return Ok("Role " + roleName + " created successfully");
+                return Ok("Role " + roleName + " criada com sucesso!");
             }
             catch (DuplicatedObjectException ex)
             {
