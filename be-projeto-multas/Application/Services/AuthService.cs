@@ -65,7 +65,8 @@ namespace Application.Services
                 {
                     AccessToken = new JwtSecurityTokenHandler().WriteToken(token),
                     RefreshToken = refreshToken,
-                    Expiration = token.ValidTo
+                    Expiration = token.ValidTo,
+                    Roles = userRoles.ToList()
                 };
             }
             else
