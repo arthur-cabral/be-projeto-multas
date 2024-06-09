@@ -100,6 +100,10 @@ namespace API.Controllers
             {
                 return NotFound(ex.Message);
             }
+            catch (DuplicatedObjectException ex)
+            {
+                return Conflict(ex.Message);
+            }
             catch (Exception ex)
             {
                 return BadRequest(ex.Message);

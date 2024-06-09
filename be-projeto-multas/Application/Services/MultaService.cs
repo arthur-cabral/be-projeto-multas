@@ -71,6 +71,15 @@ namespace Application.Services
             {
                 throw new NotFoundException("Multa de id " + multaDTO.MultaId + " não encontrada");
             }
+            var getMultaById = await _multaRepository.GetMultaById(multaDTO.MultaId);
+            if (getMultaById.NumeroAIT != multaDTO.NumeroAIT)
+            {
+                var existsMultaByAIT = await _multaRepository.ExistsMultaByAIT(multaDTO.NumeroAIT);
+                if (existsMultaByAIT)
+                {
+                    throw new DuplicatedObjectException("Já existe uma multa com o AIT: " + multaDTO.NumeroAIT);
+                }
+            }
             var multaEntity = _mapper.Map<Multa>(multaDTO);
             multaEntity.MultaId = multaDTO.MultaId;
             var updatedMulta = await _multaRepository.PutMulta(multaEntity);
