@@ -150,6 +150,18 @@ namespace Application.Services
 
         public async Task AddUserToRole(string email, string roleName)
         {
+            if (!await _roleManager.RoleExistsAsync("User"))
+            {
+                var userRole = new IdentityRole("User");
+                await _roleManager.CreateAsync(userRole);
+            }
+
+            if (!await _roleManager.RoleExistsAsync("Admin"))
+            {
+                var adminRole = new IdentityRole("Admin");
+                await _roleManager.CreateAsync(adminRole);
+            }
+
             var user = await _userManager.FindByEmailAsync(email);
 
             if (user != null)
