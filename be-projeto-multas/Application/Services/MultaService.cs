@@ -58,7 +58,6 @@ namespace Application.Services
             {
                 throw new DuplicatedObjectException("Multa de AIT " + multaDTO.NumeroAIT + " já existe");
             }
-            multaDTO.DataHoraInfracao = DateTime.UtcNow;
             var multaEntity = _mapper.Map<Multa>(multaDTO);
             var newMulta = await _multaRepository.PostMulta(multaEntity);
             return _mapper.Map<MultaDTO>(newMulta);
