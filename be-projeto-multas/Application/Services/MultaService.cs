@@ -40,6 +40,17 @@ namespace Application.Services
             return _mapper.Map<MultaDTO>(findMultaById); 
         }
 
+        public async Task<MultaDTO> GetMultaByAIT(string ait)
+        {
+            var existsMultaByAIT = await _multaRepository.ExistsMultaByAIT(ait);
+            if (!existsMultaByAIT)
+            {
+                throw new NotFoundException("Multa de AIT " + ait + " não encontrada");
+            }
+            var findMultaByAIT = await _multaRepository.GetMultaByAIT(ait);
+            return _mapper.Map<MultaDTO>(findMultaByAIT);
+        }
+
         public async Task<MultaDTO> PostMulta(MultaDTO multaDTO)
         {
             var existsMultaByAIT = await _multaRepository.ExistsMultaByAIT(multaDTO.NumeroAIT);

@@ -11,6 +11,7 @@ namespace Application.Interfaces
     {
         public Task<List<MultaDTO>> GetAllMultas();
         public Task<MultaDTO> GetMultaById(long id);
+        public Task<MultaDTO> GetMultaByAIT(string ait);
         public Task<MultaDTO> PostMulta(MultaDTO multaDTO);
         public Task<MultaDTO> PutMultaById(MultaDTO multaDTO);
         public Task DeleteMultaById(long id);

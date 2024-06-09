@@ -32,13 +32,30 @@ namespace API.Controllers
             }
         }
 
-        [Authorize(Policy = "UserOnly")]
-        [HttpGet("{id}")]
+        [HttpGet("byId/{id}")]
         public async Task<ActionResult<MultaDTO>> GetMultaById(long id)
         {
             try
             {
                 var multa = await _multaService.GetMultaById(id);
+                return Ok(multa);
+            }
+            catch (NotFoundException ex)
+            {
+                return NotFound(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpGet("byAIT/{ait}")]
+        public async Task<ActionResult<MultaDTO>> GetMultaByAIT(string ait)
+        {
+            try
+            {
+                var multa = await _multaService.GetMultaByAIT(ait);
                 return Ok(multa);
             }
             catch (NotFoundException ex)
