@@ -8,6 +8,7 @@ using System.Linq;
 using System.Reflection.Emit;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.AspNet.Identity;
 
 namespace Infrastructure.Context
 {
@@ -22,7 +23,13 @@ namespace Infrastructure.Context
         {
             base.OnModelCreating(modelBuilder);
             modelBuilder.ApplyConfigurationsFromAssembly(typeof(AppDbContext)
-                .Assembly);
+            .Assembly);
+
+            modelBuilder.Entity<Multa>()
+                .HasIndex(u => u.NumeroAIT)
+                .IsUnique();
+
+
         }
     }
 }
