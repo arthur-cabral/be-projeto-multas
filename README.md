@@ -7,7 +7,7 @@ Esse repositório tem como objetivo armazenar o código do backend de um projeto
 
 ## Variáveis de Ambiente
 
-Crie um arquivo chamado appsettings.json na pasta `/API` do projeto e cole o seguinte trecho de código
+Crie um arquivo chamado `appsettings.json` na pasta `/API` do projeto e cole o seguinte trecho de código
 
 ```bash
   {
