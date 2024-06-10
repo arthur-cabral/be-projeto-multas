@@ -78,3 +78,7 @@ Inicie o servidor
 ```bash
   dotnet run --launch-profile https
 ```
+
+## Observações
+
+O usuário de email "arthur@gmail.com" será criado automaticamente com a role 'Admin'. Cadastre-o para executar qualquer tipo de funcionalidade
